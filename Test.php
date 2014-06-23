@@ -88,8 +88,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 		list($width, $height) = getimagesize($filepathExpected);
 
-		$max = (file_exists($filepathExpected . '.txt')) ? (float) file_get_contents($filepathExpected . '.txt') : 0.1;
-
+		$max = $this->getTolerance($filename);
 
 		$i = 5;
 		do
@@ -117,6 +116,23 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$this->assertLessThanOrEqual($max, $ssim, base64_encode(file_get_contents($filepathImg)));
 
 		unlink($filepathImg);
+	}
+
+	protected function getTolerance()
+	{
+		$tolerances = [
+			'(^amazon)' => 0.3
+		];
+
+		foreach ($tolerances as $regexp => $tolerance)
+		{
+			if (preg_match($regexp, $filename))
+			{
+				return $tolerance;
+			}
+		}
+
+		return 0.1;
 	}
 
 	public function getBrowserRenderingTests()
