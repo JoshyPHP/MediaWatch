@@ -75,12 +75,21 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$html = '<!DOCTYPE html><html><head><style>body{margin:0;background:#000}</style><base href="http://localhost/"></head><body><div>' . $html . '</div></body></html>';
 		file_put_contents($filepathHtml, $html);
 
+		$this->url($filename . '.html');
+
 		$filepathExpected = __DIR__ . '/screenshots/' . $filename . '.png';
+
+		if (!file_exists($filepathExpected))
+		{
+			file_put_contents($filepathExpected, $this->currentScreenshot());
+
+			$this->markTestSkipped('Missing expected screenshot ' . $filename);
+		}
+
 		list($width, $height) = getimagesize($filepathExpected);
 
 		$max = (file_exists($filepathExpected . '.txt')) ? (float) file_get_contents($filepathExpected . '.txt') : 0.1;
 
-		$this->url($filename . '.html');
 
 		$i = 5;
 		do
@@ -122,8 +131,44 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'http://www.amazon.ca/gp/product/B00GQT1LNO/'
 			],
 			[
+				'amazon-jp',
+				'http://www.amazon.co.jp/gp/product/B003AKZ6I8/'
+			],
+			[
+				'amazon-uk',
+				'http://www.amazon.co.uk/gp/product/B00BET0NR6/'
+			],
+			[
+				'amazon-1',
+				'http://www.amazon.com/dp/B002MUC0ZY'
+			],
+			[
+				'amazon-2',
+				'http://www.amazon.com/The-BeerBelly-200-001-80-Ounce-Belly/dp/B001RB2CXY/'
+			],
+			[
+				'amazon-3',
+				'http://www.amazon.com/gp/product/B0094H8H7I'
+			],
+			[
+				'amazon-de',
+				'http://www.amazon.de/Netgear-WN3100RP-100PES-Repeater-integrierte-Steckdose/dp/B00ET2LTE6/'
+			],
+			[
+				'amazon-fr',
+				'http://www.amazon.fr/Vans-Authentic-Baskets-mixte-adulte/dp/B005NIKPAY/'
+			],
+			[
+				'amazon-it',
+				'http://www.amazon.it/gp/product/B00JGOMIP6/'
+			],
+			[
 				'audiomack-song',
 				'http://www.audiomack.com/song/your-music-fix/jammin-kungs-remix-1'
+			],
+			[
+				'audiomack-album',
+				'http://www.audiomack.com/album/chance-the-rapper/acid-rap'
 			],
 			[
 				'cnbc-1',
