@@ -72,7 +72,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$xml  = $configurator->getParser()->parse($text);
 		$html = $configurator->getRenderer()->render($xml);
 
-		$html = '<!DOCTYPE html><html><head><style>body{margin:0;background:#000}</style><base href="http://localhost/"></head><body><div>' . $html . '</div></body></html>';
+		$html = '<!DOCTYPE html><html><head><style>body{margin:0;background:#000}</style><link rel="icon" href="data:;base64,="><base href="http://localhost/"></head><body><div>' . $html . '</div></body></html>';
 		file_put_contents($filepathHtml, $html);
 
 		$this->url($filename . '.html');
