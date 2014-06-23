@@ -59,7 +59,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 	/**
 	* @dataProvider getBrowserRenderingTests
 	*/
-	public function testBrowserRendering($filename, $url)
+	public function testBrowserRendering($filename, $url, $max = 0.11)
 	{
 		$filepathImg  = sys_get_temp_dir() . '/' . $filename . '.png';
 		$filepathHtml = sys_get_temp_dir() . '/' . $filename . '.html';
@@ -93,8 +93,6 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 		list($width, $height) = getimagesize($filepathExpected);
 
-		$max = $this->getTolerance($filename);
-
 		$i = 5;
 		do
 		{
@@ -122,24 +120,6 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$this->assertLessThanOrEqual($max, $ssim);
 	}
 
-	protected function getTolerance($filename)
-	{
-		$tolerances = [
-			'(^amazon-ca)' => 0.3,
-			'(^amazon)'    => 0.25
-		];
-
-		foreach ($tolerances as $regexp => $tolerance)
-		{
-			if (preg_match($regexp, $filename))
-			{
-				return $tolerance;
-			}
-		}
-
-		return 0.1;
-	}
-
 	public function getBrowserRenderingTests()
 	{
 		$tests = [
@@ -149,39 +129,48 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			],
 			[
 				'amazon-ca',
-				'http://www.amazon.ca/gp/product/B00GQT1LNO/'
+				'http://www.amazon.ca/gp/product/B00GQT1LNO/',
+				0.308
 			],
 			[
 				'amazon-jp',
-				'http://www.amazon.co.jp/gp/product/B003AKZ6I8/'
+				'http://www.amazon.co.jp/gp/product/B003AKZ6I8/',
+				0.30
 			],
 			[
 				'amazon-uk',
-				'http://www.amazon.co.uk/gp/product/B00BET0NR6/'
+				'http://www.amazon.co.uk/gp/product/B00BET0NR6/',
+				0.25
 			],
 			[
 				'amazon-1',
-				'http://www.amazon.com/dp/B002MUC0ZY'
+				'http://www.amazon.com/dp/B002MUC0ZY',
+				0.26
 			],
 			[
 				'amazon-2',
-				'http://www.amazon.com/The-BeerBelly-200-001-80-Ounce-Belly/dp/B001RB2CXY/'
+				'http://www.amazon.com/The-BeerBelly-200-001-80-Ounce-Belly/dp/B001RB2CXY/',
+				0.25
 			],
 			[
 				'amazon-3',
-				'http://www.amazon.com/gp/product/B0094H8H7I'
+				'http://www.amazon.com/gp/product/B0094H8H7I',
+				0.25
 			],
 			[
 				'amazon-de',
-				'http://www.amazon.de/Netgear-WN3100RP-100PES-Repeater-integrierte-Steckdose/dp/B00ET2LTE6/'
+				'http://www.amazon.de/Netgear-WN3100RP-100PES-Repeater-integrierte-Steckdose/dp/B00ET2LTE6/',
+				0.25
 			],
 			[
 				'amazon-fr',
-				'http://www.amazon.fr/Vans-Authentic-Baskets-mixte-adulte/dp/B005NIKPAY/'
+				'http://www.amazon.fr/Vans-Authentic-Baskets-mixte-adulte/dp/B005NIKPAY/',
+				0.261
 			],
 			[
 				'amazon-it',
-				'http://www.amazon.it/gp/product/B00JGOMIP6/'
+				'http://www.amazon.it/gp/product/B00JGOMIP6/',
+				0.25
 			],
 			[
 				'audiomack-song',
