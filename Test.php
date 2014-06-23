@@ -32,7 +32,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$desiredCapabilities = [
 			'chromeOptions' => [
 				'binary' => '/usr/bin/google-chrome-unstable',
-				'args'   => ['app=file:///tmp']
+				'args'   => ['app=file:///tmp', 'no-referrers']
 			]
 		];
 
@@ -61,7 +61,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$filepathActual   = sys_get_temp_dir() . '/' . $filename . '.png';
 		$filepathExpected = __DIR__ . '/screenshots/' . $filename . '.png';
 
-		if (file_exists($filepathHtml))
+		if (!empty($_SERVER['TRAVIS']) && file_exists($filepathHtml))
 		{
 			$this->markTestSkipped('Already exists');
 		}
@@ -76,7 +76,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 		$configurator = new Configurator;
 		$configurator->cacheDir = sys_get_temp_dir();
-		$configurator->MediaEmbed->add(substr($filename, 0, strpos($filename, '-')));
+		$configurator->MediaEmbed->add(substr($filename, 0, strcspn($filename, '-')));
 
 		$text = $url;
 		$xml  = $configurator->getParser()->parse($text);
@@ -89,6 +89,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 		if (!file_exists($filepathExpected))
 		{
+			sleep(10);
 			file_put_contents($filepathExpected, $this->currentScreenshot());
 
 			$this->markTestSkipped('Missing expected screenshot ' . $filename);
@@ -99,7 +100,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$i = 5;
 		do
 		{
-			sleep(2);
+			sleep(3);
 
 			$gd = imagecreatefromstring($this->currentScreenshot());
 			$gd = imagecrop($gd, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
@@ -108,12 +109,12 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 			$output = exec(self::$dssim . ' ' . escapeshellarg($filepathExpected) . ' ' . escapeshellarg($filepathActual) . ' 2>&1', $arr, $error);
 
-			if ($error || !preg_match('/^[\\d.]+/', $output, $m))
+			if ($error || !preg_match('/^-?[\\d.]+/', $output, $m))
 			{
 				$this->fail($output);
 			}
 
-			$ssim = (float) $m[0];
+			$ssim = abs($m[0]);
 		}
 		while (--$i && $ssim > $max);
 
@@ -195,8 +196,62 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'http://proleter.bandcamp.com/track/april-showers'
 			],
 			[
+				'blip-1',
+				'http://blip.tv/blip-on-blip/damian-bruno-and-vinyl-rewind-blip-on-blip-58-5226104'
+			],
+			[
+				'blip-2',
+				'http://blip.tv/play/hr4jg5i1MwA.x?p=1'
+			],
+			/*[
+				// Break.com has a bug that prevents it from being embedded. They don't seem eager
+				// to fix it so I guess we don't test Break.com
+				'break',
+				'http://www.break.com/video/video-game-playing-frog-wants-more-2278131'
+			],*/
+			[
+				'cbsnews-1',
+				'http://www.cbsnews.com/video/watch/?id=50156501n'
+			],
+			[
+				'cbsnews-2',
+				'http://www.cbsnews.com/videos/is-the-us-stock-market-rigged'
+			],
+			[
 				'cnbc-1',
 				'http://video.cnbc.com/gallery/?video=3000269279'
+			],
+			[
+				'cnn-1',
+				'http://edition.cnn.com/video/data/2.0/video/showbiz/2013/10/25/spc-preview-savages-stephen-king-thor.cnn.html'
+			],
+			[
+				'cnn-2',
+				'http://us.cnn.com/video/data/2.0/video/bestoftv/2013/10/23/vo-nr-prince-george-christening-arrival.cnn.html'
+			],
+			[
+				'colbertnation',
+				'http://thecolbertreport.cc.com/videos/gh6urb/neil-degrasse-tyson-pt--1'
+			],
+			[
+				'collegehumor',
+				'http://www.collegehumor.com/video/1181601/more-than-friends'
+			],
+			[
+				'comedycentral-1',
+				'http://www.cc.com/video-clips/uu5qz4/key-and-peele-dueling-hats'
+			],
+			[
+				'comedycentral-2',
+				'http://www.comedycentral.com/video-clips/uu5qz4/key-and-peele-dueling-hats'
+			],
+			[
+				'dailymotion-1',
+				'http://www.dailymotion.com/video/x222z1'
+			],
+			[
+				'dailymotion-2',
+				'http://www.dailymotion.com/user/Dailymotion/2#video=x222z1'
 			],
 		];
 
