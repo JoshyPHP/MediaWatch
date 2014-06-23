@@ -62,7 +62,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 	public function testBrowserRendering($filename, $url)
 	{
 		$configurator = new Configurator;
-		$configurator->cacheDir = __DIR__ . '/../../.cache';
+		$configurator->cacheDir = sys_get_temp_dir();
 		$configurator->MediaEmbed->add(substr($filename, 0, strpos($filename, '-')));
 
 		$filepathImg  = sys_get_temp_dir() . '/' . $filename . '.png';
