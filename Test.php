@@ -39,16 +39,12 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		if (!empty($_SERVER['TRAVIS_JOB_NUMBER']))
 		{
 			$this->setHost($_SERVER['SAUCE_USERNAME'] . ':' . $_SERVER['SAUCE_ACCESS_KEY'] . '@ondemand.saucelabs.com');
-			$this->setBrowserUrl('http://127.0.0.1:8000/');
 
 			$desiredCapabilities['tunnel-identifier'] = $_SERVER['TRAVIS_JOB_NUMBER'];
 		}
-		else
-		{
-			$this->setBrowserUrl('file://' . sys_get_temp_dir() . '/');
-		}
 
 		$this->setDesiredCapabilities($desiredCapabilities);
+		$this->setBrowserUrl('http://127.0.0.1:8000/');
 		$this->setBrowser('chrome');
 	}
 
@@ -100,7 +96,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$i = 5;
 		do
 		{
-			sleep(3);
+			sleep(2);
 
 			$gd = imagecreatefromstring($this->currentScreenshot());
 			$gd = imagecrop($gd, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
@@ -252,6 +248,82 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			[
 				'dailymotion-2',
 				'http://www.dailymotion.com/user/Dailymotion/2#video=x222z1'
+			],
+			[
+				'ebay-com',
+				'http://www.ebay.com/itm/Converse-All-Star-Chuck-Taylor-Black-Hi-Canvas-M9160-Men-/251053262701'
+			],
+			[
+				'ebay-uk',
+				'http://www.ebay.co.uk/itm/Converse-Classic-Chuck-Taylor-Low-Trainer-Sneaker-All-Star-OX-NEW-sizes-Shoes-/230993099153'
+			],
+			[
+				'ebay-de',
+				'http://www.ebay.de/itm/Converse-Chucks-All-Star-OX-Klassiker-Gr-35-48-/320748648909'
+			],
+			[
+				'ebay-fr',
+				'http://www.ebay.fr/itm/CONVERSE-CHUCK-TAYLOR-AS-CORE-OX-All-Star-Sneakers-Men-Women-Free-Shipping-/380728186640'
+			],
+			[
+				'espn',
+				'http://espn.go.com/video/clip?id=espn:11112012'
+			],
+			[
+				'espn-deportes',
+				'http://espndeportes.espn.go.com/videohub/video/clipDeportes?id=2091094&cc=7586'
+			],
+			[
+				'facebook-photo',
+				'https://www.facebook.com/photo.php?v=10100658170103643&amp;set=vb.20531316728&amp;type=3&amp;theater'
+			],
+			[
+				'facebook-video',
+				'https://www.facebook.com/video/video.php?v=10150451523596807'
+			],
+			[
+				'facebook-post',
+				'https://www.facebook.com/FacebookDevelopers/posts/10151471074398553'
+			],
+			[
+				'funnyordie',
+				'http://www.funnyordie.com/videos/bf313bd8b4/murdock-with-keith-david'
+			],
+			[
+				'gamespot',
+				'http://www.gamespot.com/destiny/videos/destiny-the-moon-trailer-6415176/'
+			],
+			[
+				'gametrailers',
+				'http://www.gametrailers.com/reviews/zalxz0/crimson-dragon-review'
+			],
+			[
+				'getty-im',
+				'http://gty.im/3232182'
+			],
+			[
+				'getty-com',
+				'http://www.gettyimages.com/detail/3232182'
+			],
+			[
+				'getty-uk',
+				'http://www.gettyimages.co.uk/detail/3232182'
+			],
+			[
+				'gfycat',
+				'http://gfycat.com/SereneIllfatedCapybara'
+			],
+			[
+				'gist',
+				'https://gist.github.com/s9e/6806305'
+			],
+			[
+				'grooveshark-playlist',
+				'http://grooveshark.com/playlist/Purity+Ring+Shrines/74854761'
+			],
+			[
+				'grooveshark-song',
+				'http://grooveshark.com/s/Soul+Below/4zGL7i?src=5'
 			],
 		];
 
