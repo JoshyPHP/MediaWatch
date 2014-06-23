@@ -1,6 +1,6 @@
 language: php
 php: 5.5
-_addons:
+addons:
   sauce_connect:
     username: "s9e-dev"
     access_key:
