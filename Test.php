@@ -50,10 +50,6 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 		$this->setDesiredCapabilities($desiredCapabilities);
 		$this->setBrowser('chrome');
-
-		$window = $this->prepareSession()->currentWindow();
-		$window->size(['width' => 800, 'height' => 600]);
-//		$window->position(['x' => -1000, 'y' => -1000]);
 	}
 
 	/**
@@ -61,13 +57,22 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 	*/
 	public function testBrowserRendering($filename, $url, $max = 0.11)
 	{
-		$filepathImg  = sys_get_temp_dir() . '/' . $filename . '.png';
-		$filepathHtml = sys_get_temp_dir() . '/' . $filename . '.html';
+		$filepathHtml     = sys_get_temp_dir() . '/' . $filename . '.html';
+		$filepathActual   = sys_get_temp_dir() . '/' . $filename . '.png';
+		$filepathExpected = __DIR__ . '/screenshots/' . $filename . '.png';
 
 		if (file_exists($filepathHtml))
 		{
 			$this->markTestSkipped('Already exists');
 		}
+
+		if (!empty($_SERVER['MAINTENANCE']) && file_exists($filepathExpected))
+		{
+			$this->markTestSkipped('Maintenance');
+		}
+
+		$window = $this->prepareSession()->currentWindow();
+		$window->size(['width' => 800, 'height' => 600]);
 
 		$configurator = new Configurator;
 		$configurator->cacheDir = sys_get_temp_dir();
@@ -81,8 +86,6 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		file_put_contents($filepathHtml, $html);
 
 		$this->url($filename . '.html');
-
-		$filepathExpected = __DIR__ . '/screenshots/' . $filename . '.png';
 
 		if (!file_exists($filepathExpected))
 		{
@@ -101,9 +104,9 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			$gd = imagecreatefromstring($this->currentScreenshot());
 			$gd = imagecrop($gd, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
 
-			imagepng($gd, $filepathImg, 0, PNG_NO_FILTER);
+			imagepng($gd, $filepathActual, 0, PNG_NO_FILTER);
 
-			$output = exec(self::$dssim . ' ' . escapeshellarg($filepathExpected) . ' ' . escapeshellarg($filepathImg) . ' 2>&1', $arr, $error);
+			$output = exec(self::$dssim . ' ' . escapeshellarg($filepathExpected) . ' ' . escapeshellarg($filepathActual) . ' 2>&1', $arr, $error);
 
 			if ($error || !preg_match('/^[\\d.]+/', $output, $m))
 			{
@@ -118,7 +121,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		{
 			unlink($filepathHtml);
 		}
-		unlink($filepathImg);
+		unlink($filepathActual);
 
 		$this->assertLessThanOrEqual($max, $ssim);
 	}
@@ -182,6 +185,14 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			[
 				'audiomack-album',
 				'http://www.audiomack.com/album/chance-the-rapper/acid-rap'
+			],
+			[
+				'bandcamp-album',
+				'http://proleter.bandcamp.com/album/curses-from-past-times-ep'
+			],
+			[
+				'bandcamp-song',
+				'http://proleter.bandcamp.com/track/april-showers'
 			],
 			[
 				'cnbc-1',
