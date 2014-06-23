@@ -114,7 +114,10 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		}
 		while (--$i && $ssim > $max);
 
-		unlink($filepathHtml);
+		if (empty($_SERVER['TRAVIS']))
+		{
+			unlink($filepathHtml);
+		}
 		unlink($filepathImg);
 
 		$this->assertLessThanOrEqual($max, $ssim);
