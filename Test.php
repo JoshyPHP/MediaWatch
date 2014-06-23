@@ -112,16 +112,16 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		while (--$i && $ssim > $max);
 
 		unlink($filepathHtml);
-
-		$this->assertLessThanOrEqual($max, $ssim, base64_encode(file_get_contents($filepathImg)));
-
 		unlink($filepathImg);
+
+		$this->assertLessThanOrEqual($max, $ssim);
 	}
 
 	protected function getTolerance($filename)
 	{
 		$tolerances = [
-			'(^amazon)' => 0.3
+			'(^amazon-ca)' => 0.3,
+			'(^amazon)'    => 0.25
 		];
 
 		foreach ($tolerances as $regexp => $tolerance)
