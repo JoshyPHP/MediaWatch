@@ -61,12 +61,17 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 	*/
 	public function testBrowserRendering($filename, $url)
 	{
+		$filepathImg  = sys_get_temp_dir() . '/' . $filename . '.png';
+		$filepathHtml = sys_get_temp_dir() . '/' . $filename . '.html';
+
+		if (file_exists($filepathHtml))
+		{
+			$this->markTestSkipped('Already exists');
+		}
+
 		$configurator = new Configurator;
 		$configurator->cacheDir = sys_get_temp_dir();
 		$configurator->MediaEmbed->add(substr($filename, 0, strpos($filename, '-')));
-
-		$filepathImg  = sys_get_temp_dir() . '/' . $filename . '.png';
-		$filepathHtml = sys_get_temp_dir() . '/' . $filename . '.html';
 
 		$text = $url;
 		$xml  = $configurator->getParser()->parse($text);
@@ -137,7 +142,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 	public function getBrowserRenderingTests()
 	{
-		return [
+		$tests = [
 			[
 				'abcnews-1',
 				'http://abcnews.go.com/WNN/video/dog-goes-wild-when-owner-leaves-22936610'
@@ -191,5 +196,12 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'http://video.cnbc.com/gallery/?video=3000269279'
 			],
 		];
+
+		if (!empty($_SERVER['REVERSE']))
+		{
+			$tests = array_reverse($tests);
+		}
+
+		return $tests;
 	}
 }
