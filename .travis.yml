@@ -10,9 +10,3 @@ before_script:
   - touch /tmp/favicon.ico
   - wget -O - https://codeload.github.com/pornel/dssim/tar.gz/master | tar xzf - -C/tmp
   - make -C /tmp/dssim-master
-script:
-  - phpunit > /tmp/log1.txt &
-  - REVERSE=1 phpunit > /tmp/log2.txt
-  - wait
-after_script:
-  - cat log1.txt log2.txt
