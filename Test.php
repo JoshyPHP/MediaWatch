@@ -118,7 +118,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		unlink($filepathImg);
 	}
 
-	protected function getTolerance()
+	protected function getTolerance($filename)
 	{
 		$tolerances = [
 			'(^amazon)' => 0.3
