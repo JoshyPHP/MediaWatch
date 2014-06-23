@@ -311,7 +311,8 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			],
 			[
 				'gfycat',
-				'http://gfycat.com/SereneIllfatedCapybara'
+				'http://gfycat.com/SereneIllfatedCapybara',
+				0.4
 			],
 			[
 				'gist',
