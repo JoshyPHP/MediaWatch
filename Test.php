@@ -93,10 +93,12 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 		list($width, $height) = getimagesize($filepathExpected);
 
-		$i = 5;
+		$attempts = 6;
+		$sleep    = 2;
 		do
 		{
-			sleep(2);
+			sleep($sleep);
+			$sleep += 2;
 
 			$gd = imagecreatefromstring($this->currentScreenshot());
 			$gd = imagecrop($gd, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
@@ -112,7 +114,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 			$ssim = abs($m[0]);
 		}
-		while (--$i && $ssim > $max);
+		while (--$attempts && $ssim > $max);
 
 		if (empty($_SERVER['TRAVIS']))
 		{

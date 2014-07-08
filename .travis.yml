@@ -10,3 +10,4 @@ before_script:
   - touch /tmp/favicon.ico
   - wget -O - https://codeload.github.com/pornel/dssim/tar.gz/master | tar xzf - -C/tmp
   - make -C /tmp/dssim-master
+script: ./run_tests.sh
