@@ -46,83 +46,101 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$this->setDesiredCapabilities($desiredCapabilities);
 		$this->setBrowserUrl('http://127.0.0.1:8000/');
 		$this->setBrowser('chrome');
-	}
-
-	/**
-	* @dataProvider getBrowserRenderingTests
-	*/
-	public function testBrowserRendering($filename, $url, $max = 0.11)
-	{
-		$filepathHtml     = sys_get_temp_dir() . '/' . $filename . '.html';
-		$filepathActual   = sys_get_temp_dir() . '/' . $filename . '.png';
-		$filepathExpected = __DIR__ . '/screenshots/' . $filename . '.png';
-
-		if (!empty($_SERVER['TRAVIS']) && file_exists($filepathHtml))
-		{
-			$this->markTestSkipped('Already exists');
-		}
-
-		if (!empty($_SERVER['MAINTENANCE']) && file_exists($filepathExpected))
-		{
-			$this->markTestSkipped('Maintenance');
-		}
 
 		$window = $this->prepareSession()->currentWindow();
 		$window->size(['width' => 800, 'height' => 600]);
+	}
 
-		$configurator = new Configurator;
-		$configurator->cacheDir = sys_get_temp_dir();
-		$configurator->MediaEmbed->add(substr($filename, 0, strcspn($filename, '-')));
+	public function testBrowserRendering()
+	{
+		$errors = '';
 
-		$text = $url;
-		$xml  = $configurator->getParser()->parse($text);
-		$html = $configurator->getRenderer()->render($xml);
-
-		$html = '<!DOCTYPE html><html><head><style>body{margin:0;background:#000}</style><link rel="icon" href="data:;base64,="><base href="http://localhost/"></head><body><div>' . $html . '</div></body></html>';
-		file_put_contents($filepathHtml, $html);
-
-		$this->url($filename . '.html');
-
-		if (!file_exists($filepathExpected))
+		foreach ($this->getBrowserRenderingTests() as $test)
 		{
-			sleep(10);
-			file_put_contents($filepathExpected, $this->currentScreenshot());
+			$filename = $test[0];
+			$url      = $test[1];
+			$max      = (isset($test[2])) ? $test[2] : 0.11;
 
-			$this->markTestSkipped('Missing expected screenshot ' . $filename);
-		}
+			$filepathHtml     = sys_get_temp_dir() . '/' . $filename . '.html';
+			$filepathActual   = sys_get_temp_dir() . '/' . $filename . '.png';
+			$filepathExpected = __DIR__ . '/screenshots/' . $filename . '.png';
 
-		list($width, $height) = getimagesize($filepathExpected);
-
-		$attempts = 6;
-		$sleep    = 2;
-		do
-		{
-			sleep($sleep);
-			$sleep += 2;
-
-			$gd = imagecreatefromstring($this->currentScreenshot());
-			$gd = imagecrop($gd, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
-
-			imagepng($gd, $filepathActual, 0, PNG_NO_FILTER);
-
-			$output = exec(self::$dssim . ' ' . escapeshellarg($filepathExpected) . ' ' . escapeshellarg($filepathActual) . ' 2>&1', $arr, $error);
-
-			if ($error || !preg_match('/^-?[\\d.]+/', $output, $m))
+			if (!empty($_SERVER['TRAVIS']) && file_exists($filepathHtml))
 			{
-				$this->fail($output);
+				// This test is being run by another instance
+				continue;
 			}
 
-			$ssim = abs($m[0]);
-		}
-		while (--$attempts && $ssim > $max);
+			if (!empty($_SERVER['MAINTENANCE']) && file_exists($filepathExpected))
+			{
+				// Skip existing tests in maintenance mode
+				continue;
+			}
 
-		if (empty($_SERVER['TRAVIS']))
-		{
-			unlink($filepathHtml);
-		}
-		unlink($filepathActual);
+			$configurator = new Configurator;
+			$configurator->cacheDir = sys_get_temp_dir();
+			$configurator->MediaEmbed->add(substr($filename, 0, strcspn($filename, '-')));
 
-		$this->assertLessThanOrEqual($max, $ssim);
+			$text = $url;
+			$xml  = $configurator->getParser()->parse($text);
+			$html = $configurator->getRenderer()->render($xml);
+
+			$html = '<!DOCTYPE html><html><head><style>body{margin:0;background:#000}</style><link rel="icon" href="data:;base64,="><base href="http://localhost/"></head><body><div>' . $html . '</div></body></html>';
+			file_put_contents($filepathHtml, $html);
+
+			$this->url($filename . '.html');
+
+			if (!empty($_SERVER['MAINTENANCE']))
+			{
+				sleep(10);
+				file_put_contents($filepathExpected, $this->currentScreenshot());
+
+				continue;
+			}
+
+			list($width, $height) = getimagesize($filepathExpected);
+
+			$attempts = 6;
+			$sleep    = 2;
+			do
+			{
+				sleep($sleep);
+				$sleep += 2;
+
+				$gd = imagecreatefromstring($this->currentScreenshot());
+				$gd = imagecrop($gd, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
+
+				imagepng($gd, $filepathActual, 5, PNG_NO_FILTER);
+
+				$output = exec(self::$dssim . ' ' . escapeshellarg($filepathExpected) . ' ' . escapeshellarg($filepathActual) . ' 2>&1', $arr, $error);
+
+				if ($error || !preg_match('/^-?[\\d.]+/', $output, $m))
+				{
+					$errors .= "$url failed: dssim output $output\n";
+
+					continue;
+				}
+
+				$ssim = abs($m[0]);
+			}
+			while (--$attempts && $ssim > $max);
+
+			if ($ssim > $max)
+			{
+				$errors .= "$url failed: $ssim > $max " . base64_encode(file_get_contents($filepathActual)) . "\n";
+			}
+
+			if (empty($_SERVER['TRAVIS']))
+			{
+				unlink($filepathHtml);
+			}
+			unlink($filepathActual);
+		}
+
+		// Output the errors so that we can find them in Travis's logs
+		echo "\n$errors\n";
+
+		$this->assertEmpty($errors);
 	}
 
 	public function getBrowserRenderingTests()
