@@ -304,7 +304,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			[
 				'facebook-post',
 				'https://www.facebook.com/FacebookDevelopers/posts/10151471074398553',
-				0.2
+				0.25
 			],
 			[
 				'funnyordie',
