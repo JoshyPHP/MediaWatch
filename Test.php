@@ -145,7 +145,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 	public function getBrowserRenderingTests()
 	{
-		$tests = [
+		return [
 			[
 				'abcnews-1',
 				'http://abcnews.go.com/WNN/video/dog-goes-wild-when-owner-leaves-22936610'
@@ -348,12 +348,5 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'http://grooveshark.com/s/Soul+Below/4zGL7i?src=5'
 			],
 		];
-
-		if (!empty($_SERVER['REVERSE']))
-		{
-			$tests = array_reverse($tests);
-		}
-
-		return $tests;
 	}
 }
