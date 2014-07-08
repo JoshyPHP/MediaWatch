@@ -31,7 +31,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 	{
 		$desiredCapabilities = [
 			'chromeOptions' => [
-				'binary' => '/usr/bin/google-chrome-unstable',
+				'binary' => '/usr/bin/google-chrome',
 				'args'   => ['app=file:///tmp', 'no-referrers']
 			]
 		];
@@ -249,22 +249,22 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'dailymotion-2',
 				'http://www.dailymotion.com/user/Dailymotion/2#video=x222z1'
 			],
-			[
-				'ebay-com',
-				'http://www.ebay.com/itm/Converse-All-Star-Chuck-Taylor-Black-Hi-Canvas-M9160-Men-/251053262701'
-			],
-			[
-				'ebay-uk',
-				'http://www.ebay.co.uk/itm/Converse-Classic-Chuck-Taylor-Low-Trainer-Sneaker-All-Star-OX-NEW-sizes-Shoes-/230993099153'
-			],
-			[
-				'ebay-de',
-				'http://www.ebay.de/itm/Converse-Chucks-All-Star-OX-Klassiker-Gr-35-48-/320748648909'
-			],
-			[
-				'ebay-fr',
-				'http://www.ebay.fr/itm/CONVERSE-CHUCK-TAYLOR-AS-CORE-OX-All-Star-Sneakers-Men-Women-Free-Shipping-/380728186640'
-			],
+//			[
+//				'ebay-com',
+//				'http://www.ebay.com/itm/Converse-All-Star-Chuck-Taylor-Black-Hi-Canvas-M9160-Men-/251053262701'
+//			],
+//			[
+//				'ebay-uk',
+//				'http://www.ebay.co.uk/itm/Converse-Classic-Chuck-Taylor-Low-Trainer-Sneaker-All-Star-OX-NEW-sizes-Shoes-/230993099153'
+//			],
+//			[
+//				'ebay-de',
+//				'http://www.ebay.de/itm/Converse-Chucks-All-Star-OX-Klassiker-Gr-35-48-/320748648909'
+//			],
+//			[
+//				'ebay-fr',
+//				'http://www.ebay.fr/itm/CONVERSE-CHUCK-TAYLOR-AS-CORE-OX-All-Star-Sneakers-Men-Women-Free-Shipping-/380728186640'
+//			],
 			[
 				'espn',
 				'http://espn.go.com/video/clip?id=espn:11112012'
