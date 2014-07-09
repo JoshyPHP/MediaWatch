@@ -169,13 +169,6 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 	{
 		return [
 			[
-				'imgur',
-				'http://imgur.com/a/9UGCL'
-			]
-		];
-
-		return [
-			[
 				'abcnews-1',
 				'http://abcnews.go.com/WNN/video/dog-goes-wild-when-owner-leaves-22936610'
 			],
