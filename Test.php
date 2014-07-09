@@ -103,12 +103,11 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 			list($width, $height) = getimagesize($filepathExpected);
 
-			$attempts = 6;
+			$attempts = 8;
 			$sleep    = 2;
 			do
 			{
-				sleep($sleep);
-				$sleep += 2;
+				sleep($sleep++);
 
 				$gd = imagecreatefromstring($this->currentScreenshot());
 				$gd = imagecrop($gd, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
