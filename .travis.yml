@@ -7,7 +7,6 @@ addons:
       secure: "ZzmDH4CvOZfA/Q+euAyUsLCDi/Q0Z07ue5wkyBFCc/er7bYoQniK7KNnuoXhLW8LII3O2O0UMXbteujDLxqpaJY+2bXom9xrWzPhuX/SOiYYpQnNXkDOxLNQE2QVmOcyg3lYe5D7NIAfuSBYmywGFWNdXWVVHMB3JNQtPKU+N+A="
 before_script:
   - php -S 0.0.0.0:8000 -t "$(php -r 'echo sys_get_temp_dir();')" &
-  - touch /tmp/favicon.ico
   - wget -O - https://codeload.github.com/pornel/dssim/tar.gz/master | tar xzf - -C/tmp
   - make -C /tmp/dssim-master
 script: ./run_tests.sh

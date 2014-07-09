@@ -51,11 +51,14 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$window->size(['width' => 800, 'height' => 600]);
 	}
 
-	public function testBrowserRendering()
+	/**
+	* @dataProvider getBrowserRenderingTestsChunked
+	*/
+	public function testBrowserRendering($tests)
 	{
 		$errors = '';
 
-		foreach ($this->getBrowserRenderingTests() as $test)
+		foreach ($tests as $test)
 		{
 			$filename = $test[0];
 			$url      = $test[1];
@@ -141,6 +144,17 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		echo "\n$errors\n";
 
 		$this->assertEmpty($errors);
+	}
+
+	public function getBrowserRenderingTestsChunked()
+	{
+		$chunks = [];
+		foreach ($this->getBrowserRenderingTests() as $i => $test)
+		{
+			$chunks[$i % 10][0][] = $test;
+		}
+
+		return $chunks;
 	}
 
 	public function getBrowserRenderingTests()
