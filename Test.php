@@ -291,6 +291,18 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'dailymotion-2',
 				'http://www.dailymotion.com/user/Dailymotion/2#video=x222z1'
 			],
+			[
+				'dailyshow-1',
+				'http://www.thedailyshow.com/watch/mon-july-16-2012/louis-c-k-'
+			],
+			[
+				'dailyshow-2',
+				'http://www.thedailyshow.com/collection/429537/shutstorm-2013/429508'
+			],
+			[
+				'dailyshow-3',
+				'http://thedailyshow.cc.com/videos/elvsf4/what-not-to-buy'
+			],
 //			[
 //				'ebay-com',
 //				'http://www.ebay.com/itm/Converse-All-Star-Chuck-Taylor-Black-Hi-Canvas-M9160-Men-/251053262701'
@@ -307,6 +319,10 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 //				'ebay-fr',
 //				'http://www.ebay.fr/itm/CONVERSE-CHUCK-TAYLOR-AS-CORE-OX-All-Star-Sneakers-Men-Women-Free-Shipping-/380728186640'
 //			],
+			[
+				'eighttracks',
+				'http://8tracks.com/midna/2242699'
+			],
 			[
 				'espn',
 				'http://espn.go.com/video/clip?id=espn:11112012'
@@ -362,12 +378,68 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'https://gist.github.com/s9e/6806305'
 			],
 			[
+				'googleplus',
+				'https://plus.google.com/106189723444098348646/posts/V8AojCoTzxV'
+			],
+			[
+				'googlesheets',
+				'https://docs.google.com/spreadsheets/d/1f988o68HDvk335xXllJD16vxLBuRcmm3vg6U9lVaYpA'
+			],
+			[
 				'grooveshark-playlist',
 				'http://grooveshark.com/playlist/Purity+Ring+Shrines/74854761'
 			],
 			[
 				'grooveshark-song',
 				'http://grooveshark.com/s/Soul+Below/4zGL7i?src=5'
+			],
+			[
+				'hulu',
+				'http://www.hulu.com/watch/484180'
+			],
+			[
+				'ign',
+				'http://www.ign.com/videos/2013/07/12/pokemon-x-version-pokemon-y-version-battle-trailer'
+			],
+			[
+				'imgur',
+				'http://imgur.com/a/9UGCL'
+			],
+			[
+				'indiegogo',
+				'http://www.indiegogo.com/projects/gameheart-redesigned'
+			],
+			[
+				'instagram',
+				'http://instagram.com/p/gbGaIXBQbn/'
+			],
+			[
+				'internetarchive',
+				'https://archive.org/details/BillGate99'
+			],
+			[
+				'izlesene',
+				'http://www.izlesene.com/video/lily-allen-url-badman/7600704'
+			],
+			[
+				'kickstarter',
+				'http://www.kickstarter.com/projects/1869987317/wish-i-was-here-1/widget/card.html'
+			],
+			[
+				'kickstarter',
+				'http://www.kickstarter.com/projects/1869987317/wish-i-was-here-1/widget/video.html'
+			],
+			[
+				'liveleak',
+				'http://www.liveleak.com/view?i=3dd_1366238099'
+			],
+			[
+				'metacafe',
+				'http://www.metacafe.com/watch/10785282/chocolate_treasure_chest_epic_meal_time/'
+			],
+			[
+				'mixcloud',
+				'http://www.mixcloud.com/OneTakeTapes/timsch-one-take-tapes-2/'
 			],
 		];
 	}
