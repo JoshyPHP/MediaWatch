@@ -88,6 +88,12 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			$xml  = $configurator->getParser()->parse($text);
 			$html = $configurator->getRenderer()->render($xml);
 
+			if (!empty($_SERVER['TRAVIS']) && file_exists($filepathHtml))
+			{
+				// This test is being run by another instance, the file got created since last check
+				continue;
+			}
+
 			$html = '<!DOCTYPE html><html><head><style>body{margin:0;background:#000}</style><link rel="icon" href="data:;base64,="><base href="http://localhost/"></head><body><div>' . $html . '</div></body></html>';
 			file_put_contents($filepathHtml, $html);
 
@@ -140,7 +146,10 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		}
 
 		// Output the errors so that we can find them in Travis's logs
-		echo "\n$errors\n";
+		if ($errors)
+		{
+			echo "\n$errors\n";
+		}
 
 		$this->assertEmpty($errors);
 	}
