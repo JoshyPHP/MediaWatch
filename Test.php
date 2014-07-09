@@ -124,7 +124,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 				if ($error || !preg_match('/^-?[\\d.]+/', $output, $m))
 				{
-					$errors .= "$url failed: dssim output $output\n";
+					$errors .= "$filename failed: dssim output $output\n";
 
 					continue;
 				}
@@ -135,7 +135,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 			if ($ssim > $max)
 			{
-				$errors .= "$url failed: $ssim > $max " . base64_encode(file_get_contents($filepathActual)) . "\n";
+				$errors .= "$filename does not match: $ssim > $max " . base64_encode(file_get_contents($filepathActual)) . "\n";
 			}
 
 			if (empty($_SERVER['TRAVIS']))
@@ -167,6 +167,13 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 	public function getBrowserRenderingTests()
 	{
+		return [
+			[
+				'imgur',
+				'http://imgur.com/a/9UGCL'
+			]
+		];
+
 		return [
 			[
 				'abcnews-1',
