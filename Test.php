@@ -151,7 +151,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$chunks = [];
 		foreach ($this->getBrowserRenderingTests() as $i => $test)
 		{
-			$chunks[$i % 10][0][] = $test;
+			$chunks[floor($i / 10)][0][] = $test;
 		}
 
 		return $chunks;
