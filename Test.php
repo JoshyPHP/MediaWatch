@@ -48,7 +48,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 		$this->setBrowser('chrome');
 
 		$window = $this->prepareSession()->currentWindow();
-		$window->size(['width' => 800, 'height' => 600]);
+		$window->size(['width' => 810, 'height' => 610]);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				continue;
 			}
 
-			$html = '<!DOCTYPE html><html><head><style>body{margin:0;background:#000}</style><link rel="icon" href="data:;base64,="><base href="http://localhost/"></head><body><div>' . $html . '</div></body></html>';
+			$html = '<!DOCTYPE html><html><head><link rel="icon" href="data:;base64,="><base href="http://localhost/"></head><body style="margin:0;background:#000}"><div style="width:800px;height:600px">' . $html . '</div></body></html>';
 			file_put_contents($filepathHtml, $html);
 
 			$this->url($filename . '.html');
