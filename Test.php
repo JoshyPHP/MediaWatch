@@ -353,11 +353,11 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			],
 			[
 				'espn',
-				'http://espn.go.com/video/clip?id=espn:11112012'
+				'http://espn.go.com/video/clip?id=11216330'
 			],
 			[
 				'espn-deportes',
-				'http://espndeportes.espn.go.com/videohub/video/clipDeportes?id=2091094&cc=7586'
+				'http://espndeportes.espn.go.com/videohub/video/clipDeportes?id=2134782'
 			],
 			[
 				'facebook-photo',
