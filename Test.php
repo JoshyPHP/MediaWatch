@@ -12,8 +12,6 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 	public static function setUpBeforeClass()
 	{
-		PHPUnit_Extensions_Selenium2TestCase::shareSession(true);
-
 		if (file_exists('/tmp/dssim-master/dssim'))
 		{
 			self::$dssim = '/tmp/dssim-master/dssim';
@@ -440,11 +438,11 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				'http://www.izlesene.com/video/lily-allen-url-badman/7600704'
 			],
 			[
-				'kickstarter',
+				'kickstarter-card',
 				'http://www.kickstarter.com/projects/1869987317/wish-i-was-here-1/widget/card.html'
 			],
 			[
-				'kickstarter',
+				'kickstarter-video',
 				'http://www.kickstarter.com/projects/1869987317/wish-i-was-here-1/widget/video.html'
 			],
 			[
