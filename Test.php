@@ -121,26 +121,38 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 			list($width, $height) = getimagesize($filepathExpected);
 
-			$attempts = 8;
-			$sleep    = 2;
-			do
+			$refreshes = 2;
+			start:
 			{
-				sleep($sleep++);
-
-				$this->saveScreenshot($filepathActual, $width, $height);
-
-				$output = exec(self::$dssim . ' ' . escapeshellarg($filepathExpected) . ' ' . escapeshellarg($filepathActual) . ' 2>&1', $arr, $error);
-
-				if ($error || !preg_match('/^-?[\\d.]+/', $output, $m))
+				$screenshots = 5;
+				$sleep       = 2;
+				do
 				{
-					$errors .= "$filename failed: dssim output $output\n";
+					sleep($sleep++);
 
-					continue;
+					$this->saveScreenshot($filepathActual, $width, $height);
+
+					$output = exec(self::$dssim . ' ' . escapeshellarg($filepathExpected) . ' ' . escapeshellarg($filepathActual) . ' 2>&1', $arr, $error);
+
+					if ($error || !preg_match('/^-?[\\d.]+/', $output, $m))
+					{
+						$errors .= "$filename failed: dssim output $output\n";
+
+						continue;
+					}
+
+					$ssim = abs($m[0]);
 				}
+				while (--$screenshots && $ssim > $max);
 
-				$ssim = abs($m[0]);
+				if ($ssim > $max && $refreshes > 0)
+				{
+					--$refreshes;
+					$this->refresh();
+
+					goto start;
+				}
 			}
-			while (--$attempts && $ssim > $max);
 
 			if ($ssim > $max)
 			{
