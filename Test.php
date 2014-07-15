@@ -12,6 +12,8 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 
 	public static function setUpBeforeClass()
 	{
+		PHPUnit_Extensions_Selenium2TestCase::shareSession(true);
+
 		if (file_exists('/tmp/dssim-master/dssim'))
 		{
 			self::$dssim = '/tmp/dssim-master/dssim';
@@ -104,13 +106,16 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 				$width  = (preg_match('/width="(\d+)"/', $html, $m))  ? $m[1] : 800;
 				$height = (preg_match('/height="(\d+)"/', $html, $m)) ? $m[1] : 600;
 
+				// Give time for the whole thing to load
+				sleep(10);
+
 				// Don't trust the height for dynamically resized iframes
 				if (strpos($html, 'style.height'))
 				{
-					$height = 600;
+					$size   = $this->byTag('iframe')->size();
+					$height = $size['height'];
 				}
 
-				sleep(10);
 				$this->saveScreenshot($filepathExpected, $width, $height);
 
 				continue;
@@ -346,7 +351,7 @@ class Test extends PHPUnit_Extensions_Selenium2TestCase
 			],
 			[
 				'facebook-photo',
-				'https://www.facebook.com/photo.php?v=10100658170103643&amp;set=vb.20531316728&amp;type=3&amp;theater'
+				'https://www.facebook.com/photo.php?fbid=10152476416772631'
 			],
 			[
 				'facebook-video',
